@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "gymVision",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

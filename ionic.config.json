@@ -1,0 +1,7 @@
+{
+  "name": "gymVision",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
