@@ -1,6 +1,10 @@
-import { useState, useRef, HtmlHTMLAttributes } from "react";
+import { useState, useRef } from "react";
 import {
     IonContent,
+    IonFab,
+    IonFabButton,
+    IonFabList,
+    IonIcon,
     IonItemDivider,
     IonLabel,
     IonPage,
@@ -9,19 +13,16 @@ import {
     IonSlide,
     IonSlides,
 } from "@ionic/react";
+import { add, ellipsisVerticalOutline, pencilSharp, apps, list } from 'ionicons/icons';
 import "./Gym.css";
-import Exercises from "./exercises";
+import Exercises from "./Exercises";
 import Header from "../../components/Header";
-
-// Segment Types
-enum SegmentType {
-    Exercises,
-    Stretches
-}
+import { LayoutType, SegmentType } from "../../Enums";
 
 const Gym: React.FC = () => {
     const slidesRef = useRef<HTMLIonSlidesElement>(null);
     const [currentSegment, setCurrentSegment] = useState("exercises");
+    const [currentLayout, setCurrentLayout] = useState(LayoutType.List);
 
     const changeSegment = (type: SegmentType) => {
         if (slidesRef.current == null) return;
@@ -56,6 +57,15 @@ const Gym: React.FC = () => {
         }
     }
 
+    const onLayoutToggleClick = () => {
+        if (currentLayout === LayoutType.List) {
+            setCurrentLayout(LayoutType.Categories);
+        }
+        else {
+            setCurrentLayout(LayoutType.List);
+        }
+    }
+
     return (
         <IonPage>
             <Header title="Gym" />
@@ -72,12 +82,22 @@ const Gym: React.FC = () => {
                 </IonItemDivider>
                 <IonSlides ref={slidesRef} onIonSlideDidChange={onSegmentSlide}>
                     <IonSlide>
-                        <Exercises />
+                        <Exercises layout={currentLayout} />
                     </IonSlide>
                     <IonSlide>
                         Stretches Page
                     </IonSlide>
                 </IonSlides>
+                <IonFab vertical="bottom" horizontal="end" slot="fixed">
+                    <IonFabButton>
+                        <IonIcon icon={ellipsisVerticalOutline} />
+                    </IonFabButton>
+                    <IonFabList side="top">
+                        <IonFabButton color="primary" onClick={onLayoutToggleClick}><IonIcon icon={currentLayout === LayoutType.Categories ? list : apps} /></IonFabButton>
+                        <IonFabButton color="primary"><IonIcon icon={pencilSharp} /></IonFabButton>
+                        <IonFabButton color="primary"><IonIcon icon={add} /></IonFabButton>
+                    </IonFabList>
+                </IonFab>
             </IonContent>
         </IonPage>
     );
